@@ -1,6 +1,7 @@
 # Cauzin Softstrip Decoder
 The Cauzin Softstrip is a two-dimensional bar code developed by Cauzin Systems. It was used to encode all kind of digital data such as software, text files or graphics. Unfortunately, the Cauzin Softstrip was not as successful as anticipated and disappeared a few years later after its release. 
-It is already difficult to obtain a working Softstrip Reader and it will probably be impossible in a few years. Therefore, a digital Softstrip decoder was created so people without access to an optical reader can decode the Cauzin Softstrip. 
+It is already difficult to obtain a working Softstrip Reader and it will probably be impossible in a few years. Therefore, a digital Softstrip decoder was created so people without access to an optical reader can decode the Cauzin Softstrip.
+For a more detailed description about this project, please refer to my master's [thesis](https://stl.htwsaar.de/tr/STL-TR-2018-03.pdf).
 
 ### Installation
 
@@ -65,7 +66,7 @@ $ python nn/generate_coordinate_train_data.py
 **Important: Please set the correct paths for the input and output data.**
 Please inspect following files to see how the input data is structured:
 - textfiles/qwiksort1_rows_by_hand.txt
-- textfiles/textfiles/qwiksort1_gray_matrix.txt
+- textfiles/qwiksort1_gray_matrix.txt
 
 The file *qwiksort_rows_by_hand* contains the binary values of each row. Rows are separated from eatch other with an empty line. The file *qwiksort1_gray_matrix* contains the corresponding grayscale values.
 
