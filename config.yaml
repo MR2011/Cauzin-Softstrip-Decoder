@@ -1,0 +1,3 @@
+row_decoder: 1 #0=algorithmic, 1=cnn
+row_extractor: 0 #0=algorithmic, 1=cnn
+timeout: 20 # in minutes
