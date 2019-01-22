@@ -35,6 +35,8 @@ It is recommended to use the algorithmic row extractor and the CNN approach for 
 **Important: the CNN row extractor does ONLY work with the CNN row decoder**
 
 ## Training 
+### Dataset
+The whole dataset used during my thesis is available [here](https://drive.google.com/open?id=18B6lIoc4lNAM6J61AiFCUf6t9b2NrAMs).
 ### Row Decoding
 In order to generate training data for the row decoder CNN first run:
 ```sh
