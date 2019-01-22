@@ -59,7 +59,8 @@ class SoftstripDecoder:
     def decode(self, img, first_strip=False):
         softstrip_matrix = SoftstripMatrix(img, self.gray_img)
         header_extractor = HeaderExtractor(softstrip_matrix)
-        softstrip_matrix = header_extractor.remove_horizontal_header()
+        header_extractor.parse_header()
+        vertical_sync_start = header_extractor.vertical_sync_start
         self.bits_count = header_extractor.get_bits_per_row()
 
         if self.config['row_extractor'] == CNN_ROW_EXTRACTOR:
@@ -70,7 +71,7 @@ class SoftstripDecoder:
             grouped_matrix, gray_grouped_matrix = row_extractor.extract_rows()
 
         if self.config['row_decoder'] == CNN_ROW_DECODER:
-            row_decoder = CnnRowDecoder(gray_grouped_matrix, self.start_time, self.bits_count, self.config['timeout'])
+            row_decoder = CnnRowDecoder(gray_grouped_matrix, self.start_time, self.bits_count, self.config['timeout'], vertical_sync_start)
             reduced_pixel_matrix = row_decoder.decode_rows()
         else:
             row_decoder = AlgorithmicRowDecoder(grouped_matrix, self.bits_count, self.start_time, self.config['timeout'])
