@@ -16,10 +16,11 @@ class CnnRowDecoder:
         Implementation of a row decoding method with a CNN.
         The dibits in each row are classified with a CNN.
     """
-    def __init__(self, grayscale_grouped_matrix, start_time, bits_count, timeout):
+    def __init__(self, grayscale_grouped_matrix, start_time, bits_count, timeout, vertical_sync_start):
         self.grayscale_grouped_matrix = grayscale_grouped_matrix
         self.start_time = start_time
         self.bits_count = bits_count
+        self.vertical_sync_start = vertical_sync_start
         self.model, self.labels = load_cnn(MODEL_FILENAME, WEIGHT_FILENAME, LABELS_FILENAME)
         self.timeout = timeout
 
@@ -53,11 +54,11 @@ class CnnRowDecoder:
                         break
 
                 valid_rows = list(valid_rows) 
-                if len(valid_rows) == 0: # Row could not be decoded
+                if len(valid_rows) == 0 and index > self.vertical_sync_start: # Row could not be decoded
                     print("INDEX:" + str(index))
                     print("NO VALID ROW FOUND")
                     return []
-                else:
+                elif index > 1:
                     reduced_matrix.append(valid_rows)
         return reduced_matrix
 
@@ -108,16 +109,17 @@ class CnnRowDecoder:
             changed and later more dibits.
         """
         uncertain = []
+        combinations = []
         for index, value in enumerate(confidences):
             if value < MIN_CONFIDENCE:
                 uncertain.append(index)
-        combinations = list(itertools.product([0, 1], repeat=len(uncertain)))
-        # sort combinations:
-        # (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), (0, 0, 1, 0, 0) ...
-        #  so that only one dibit is changed first
-        return sorted(combinations, key=lambda x: x.count(1)), uncertain
+        for i in range(len(uncertain)):
+            combination = [0] * len(uncertain)
+            combination[i] = 1
+            combinations.append(combination)
+        return combinations, uncertain
 
-    def bfs_find(self, row, valid_rows=set(), offset=0):
+    def bfs_find(self, row, valid_rows, offset=0):
         """
             Rows are split with a BFS search. If the decoding of a split
             row fails, the dibits with a low confidence value will be changed.
