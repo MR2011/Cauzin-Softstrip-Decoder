@@ -51,8 +51,10 @@ class SoftstripDecoder:
         self.config = yaml.load(self.config)
 
     def save_data(self):
-        print("SAVE: " + str(len(self.data)) + " BYTES AS " + self.strip_meta_info.filename)
-        os.makedirs(os.path.dirname(self.strip_meta_info.filename), exist_ok=True)
+        fn = self.strip_meta_info.filename
+        print("SAVE: " + str(len(self.data)) + " BYTES AS " + fn)
+        if "/" in fn:
+            os.makedirs(os.path.dirname(fn), exist_ok=True)
         with open(self.strip_meta_info.filename, mode='wb') as f:
             f.write(bytearray(self.data))
 
