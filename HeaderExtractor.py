@@ -24,8 +24,8 @@ class HeaderExtractor(AbstractHeaderExtractor):
         self.create_components()
 
     def remove_horizontal_header(self):
-        vertical_sync_start = self.parse_header()
-        self.remove_horizontal_header_from_matrix(vertical_sync_start)
+        self.parse_header()
+        self.remove_horizontal_header_from_matrix()
         return self.softstrip_matrix
 
 
@@ -43,19 +43,18 @@ class HeaderExtractor(AbstractHeaderExtractor):
                     horizontal_row = row
                     horizontal_sync_extracted = True
             if horizontal_sync_extracted and not vertical_sync_extracted:
-                vertical_sync_start = index
+                self.vertical_sync_start = index
                 count_diff = abs(len(row['components']) - len(horizontal_row['components']))
                 if count_diff > MINIMUM_BAR_DIFFERENCE:
                     if self.check_row_similarity(index, VERTICAL_SIMILARITY_MINIMUM):
                         vertical_sync_extracted = True
                         vertical_sync_row = row
-        return vertical_sync_start
 
-    def remove_horizontal_header_from_matrix(self, vertical_sync_start):
+    def remove_horizontal_header_from_matrix(self):
         """
             Deletes all rows before vertical_sync_start
         """
-        for i in range(vertical_sync_start):
+        for i in range(self.vertical_sync_start):
             del self.softstrip_matrix.binary_matrix[0]
             if self.softstrip_matrix.grayscale_matrix is not None:
                 del self.softstrip_matrix.grayscale_matrix[0]  
