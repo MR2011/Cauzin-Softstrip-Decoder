@@ -73,9 +73,6 @@ class DataExtractor:
 
     def extract_data_bits_from_row(self, row, index, header_processed):
         if type(row) is list:
-            if header_processed and len(row) > 1:
-                self.alternative_rows.append(row)
-                self.alternative_indices.append(index)
             row = row[0]
         row = row.strip()
         line_data_raw = row[7:-7]
@@ -102,8 +99,11 @@ class DataExtractor:
 
             if header_processed is True:
                 self.bits += line_data
+                if len(row) > 1:
+                    self.alternative_rows.append(row)
+                    self.alternative_indices.append(index)
 
-            last_row = convert_dibit_row_to_bit(row[7:-7])
+            last_row = line_data
 
     def parse_up_to_checksum(self):
         """
@@ -168,7 +168,7 @@ class DataExtractor:
             self.bits = []
             self.extract_all_data_bits(new_raw_data)
             data = self.parse_up_to_checksum()
-            if self.attributes['checksum'] != self.calculate_checksum(data, self.attributes['length']):
+            if self.attributes['checksum'] == self.calculate_checksum(data, self.attributes['length']):
                 self.valid = True
                 break
 
