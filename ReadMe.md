@@ -36,7 +36,7 @@ It is recommended to use the algorithmic row extractor and the CNN approach for 
 
 ## Training 
 ### Dataset
-The whole dataset used during my thesis is available [here](https://drive.google.com/open?id=18B6lIoc4lNAM6J61AiFCUf6t9b2NrAMs).
+The generated Softstrips from DS1 are available [here](https://drive.google.com/file/d/1XY1yUkq9JUykQ-Iu2egdXcUK-MCb_8vb/view?usp=sharing)
 ### Row Decoding
 In order to generate training data for the row decoder CNN first run:
 ```sh
